@@ -18,16 +18,16 @@ Inside each day's folder:
 🛠 **Technologies Used**
 
 - **Python**
-  - FastAPI ⚡ / Flask
+  - `FastAPI` / `Flask`
   - `requests`, `python-dotenv`, etc.
 - **Frontend**
-  - HTML / CSS / Bootstrap
-  - JavaScript
+  - `HTML` / `CSS` / `Bootstrap`
+  - `JavaScript`
 - **Voice Tools**
-  - Murf AI TTS APIs (Text-to-Speech)
+  - `Murf AI TTS APIs` (Text-to-Speech)
   - Audio playback in browser
 - **Deployment (Optional)**
-  - Uvicorn / Replit / Render
+  - `Uvicorn` / `Replit` / `Render`
 
 ▶️ **Running a Project**
 
