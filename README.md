@@ -31,9 +31,9 @@ Inside each day's folder:
 
 ▶️ **Running a Project**
 
-cd day-01  # or day-02, day-03, etc.
-pip install -r requirements.txt
-uvicorn main:app --reload
+- cd day-01  # or day-02, day-03, etc.
+- pip install -r requirements.txt
+- uvicorn main:app --reload
 
 🗓️ **Completed Days**
 
