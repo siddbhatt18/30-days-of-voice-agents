@@ -31,13 +31,13 @@ Inside each day's folder:
 
 ▶️ **Running a Project**
 
-- cd day-01  # or day-02, day-03, etc.
-- pip install -r requirements.txt
-- uvicorn main:app --reload
+cd day-01  # or day-02, day-03, etc. <br>
+pip install -r requirements.txt <br>
+uvicorn main:app --reload <br>
 
 🗓️ **Completed Days**
 
-✅ Day 01: Basic FastAPI + Bootstrap UI
-✅ Day 02: Text-to-Speech using Murf AI API
+✅ Day 01: Basic FastAPI + Bootstrap UI <br>
+✅ Day 02: Text-to-Speech using Murf AI API <br>
 
 More coming soon...
