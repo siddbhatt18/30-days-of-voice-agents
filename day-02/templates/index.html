@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Day 2 - Voice Agent Challenge</title>
+
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+
+  <div class="container d-flex justify-content-center align-items-center min-vh-100">
+    <div class="card shadow p-4 text-center" style="max-width: 400px; width: 100%;">
+      
+      <h4 class="mb-3">🗣️ Welcome to Day 2</h4>
+      <p class="mb-4 text-muted">Convert text to speech using Murf TTS API</p>
+
+      <!-- Text input for message -->
+      <input type="text" id="textInput" class="form-control mb-3" placeholder="Enter your message">
+
+      <!-- Button triggers TTS -->
+      <button class="btn btn-primary w-100" onclick="generateTTS()">Generate Voice</button>
+
+      <!-- Audio player -->
+      <audio id="audioPlayer" class="mt-4" controls hidden></audio>
+    
+    </div>
+  </div>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  
+  <!-- Custom JS -->
+  <script src="/static/script.js"></script>
+
+</body>
+</html>
