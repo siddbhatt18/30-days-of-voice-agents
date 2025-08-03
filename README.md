@@ -6,18 +6,7 @@ Welcome to my repository for the **30 Days of Voice Agents** challenge, organize
 
 The goal is to create 30 mini voice agent projects in 30 days. Each day focuses on a new concept — from UI interactions to speech synthesis and voice APIs.
 
-Whether it's a simple button with audio feedback or an advanced AI agent, every day's project builds upon the last.
-
 📁 **Repository Structure**
-
-Each day's code lives in its own folder:
-
-30-days-of-voice-agents/
-├── day-01/ # FastAPI + Bootstrap Welcome Page
-├── day-02/ # TTS API Integration (Text to Speech)
-├── ...
-├── README.md # You're here
-├── .gitignore
 
 Inside each day's folder:
 - `main.py` or `app.py` – Backend logic (FastAPI or Flask)
