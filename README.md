@@ -24,13 +24,20 @@ Inside each day's folder:
   - `HTML` / `CSS` / `Bootstrap`
   - `JavaScript`
 - **Voice Tools**
-  - `Murf AI TTS APIs` (Text-to-Speech)
+  - `Murf AI TTS APIs` (Text-to-Speech – used in Day 2)
   - Audio playback in browser
 - **Deployment (Optional)**
   - `Uvicorn` / `Replit` / `Render`
 
 ▶️ **Running a Project**
 
-- cd day-01/02/..
-- pip install -r requirements.txt
-- uvicorn main:app --reload
+cd day-01  # or day-02, day-03, etc.
+pip install -r requirements.txt
+uvicorn main:app --reload
+
+🗓️ **Completed Days**
+
+✅ Day 01: Basic FastAPI + Bootstrap UI
+✅ Day 02: Text-to-Speech using Murf AI API
+
+More coming soon...
