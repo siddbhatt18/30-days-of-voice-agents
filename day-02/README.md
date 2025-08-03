@@ -25,15 +25,15 @@ Make sure to use a valid voice ID in the request payload (e.g., `en-US-natalie`)
 
 ▶️ **Run the App**
 
-cd day-02/
-pip install -r requirements.txt
+cd day-02/ <br>
+pip install -r requirements.txt <br>
 uvicorn main:app --reload
 
 Visit http://localhost:8000 in your browser.
 
 🧪 **Test Input**
 
-Try typing something like:
+Try typing something like: <br>
 "This is Day 2 of the Voice Agent Challenge."
 
 Click Generate Voice and listen!
