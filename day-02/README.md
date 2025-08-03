@@ -18,7 +18,7 @@ A voice app that:
 
 🔐 **Environment Variables**
 
-Create a `.env` file in the root of `day-02/`:
+Create a `.env` file in the root of `day-02/`: <br>
 MURF_API_KEY=your_actual_murf_api_key
 
 Make sure to use a valid voice ID in the request payload (e.g., `en-US-natalie`).
