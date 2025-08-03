@@ -31,11 +31,6 @@ Inside each day's folder:
 
 ▶️ **Running a Project**
 
-To run a day's project locally:
-
-cd day-01  # or day-02, etc.
-pip install -r requirements.txt
-uvicorn main:app --reload  # or python app.py if using Flask
-
-Then open your browser at:
-http://localhost:8000
+- cd day-01/02/..
+- pip install -r requirements.txt
+- uvicorn main:app --reload
