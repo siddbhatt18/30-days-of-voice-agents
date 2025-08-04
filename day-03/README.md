@@ -21,14 +21,14 @@ A voice app that:
 
 🔐 **Environment Variables**
 
-Create a `.env` file in the root of `day-02/`: <br>
+Create a `.env` file in the root of `day-03/`: <br>
 MURF_API_KEY=your_actual_murf_api_key
 
 Make sure to use a valid voice ID in the request payload (e.g., `en-US-natalie`).
 
 ▶️ **Run the App**
 
-cd day-02/ <br>
+cd day-03/ <br>
 pip install -r requirements.txt <br>
 uvicorn main:app --reload
 
