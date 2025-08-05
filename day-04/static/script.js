@@ -1,4 +1,4 @@
-// ========== Text-to-Speech (TTS) ==========
+// --- Fallback voices in case API call fails
 const fallbackVoices = [
   { displayName: 'Natalie (Female)', voiceId: 'en-US-natalie' },
   { displayName: 'Aria (Female)', voiceId: 'en-US-aria' },
@@ -10,27 +10,10 @@ const fallbackVoices = [
 function populateVoiceSelector(voices) {
   const voiceSelector = document.getElementById('voiceSelector');
   voiceSelector.innerHTML = '';
-  voices.forEach(voice => {
-    const option = new Option(voice.displayName, voice.voiceId);
-    voiceSelector.add(option);
+  voices.forEach(v => {
+    voiceSelector.add(new Option(v.displayName, v.voiceId));
   });
 }
-
-document.addEventListener('DOMContentLoaded', async () => {
-  try {
-    const response = await fetch('/voices');
-    if (!response.ok) throw new Error('Failed to fetch voices');
-    const data = await response.json();
-    if (Array.isArray(data) && data.length > 0) {
-      populateVoiceSelector(data);
-    } else {
-      populateVoiceSelector(fallbackVoices);
-    }
-  } catch (error) {
-    console.error("Using fallback voices due to error:", error);
-    populateVoiceSelector(fallbackVoices);
-  }
-});
 
 async function generateTTS() {
   const text = document.getElementById('textInput').value;
@@ -41,7 +24,6 @@ async function generateTTS() {
 
   errorDisplay.textContent = '';
   audioPlayer.hidden = true;
-
   button.disabled = true;
   button.textContent = 'Generating...';
 
@@ -50,11 +32,7 @@ async function generateTTS() {
   formData.append('voiceId', voiceId);
 
   try {
-    const response = await fetch('/tts', {
-      method: 'POST',
-      body: formData
-    });
-
+    const response = await fetch('/tts', { method: 'POST', body: formData });
     const data = await response.json();
 
     if (response.ok && data.audio_url) {
@@ -62,11 +40,11 @@ async function generateTTS() {
       audioPlayer.hidden = false;
       audioPlayer.play();
     } else {
-      errorDisplay.textContent = `Error: ${data.error || 'TTS generation failed.'}`;
+      errorDisplay.textContent = `Error: ${data.error || 'TTS failed.'}`;
       console.error(data);
     }
   } catch (err) {
-    errorDisplay.textContent = 'An unexpected error occurred. Please try again.';
+    errorDisplay.textContent = 'An unexpected error occurred.';
     console.error(err);
   } finally {
     button.disabled = false;
@@ -74,68 +52,62 @@ async function generateTTS() {
   }
 }
 
-
-// ========== Echo Bot (Voice Recording) ==========
-
-let mediaRecorder = null;
-let mediaStream = null;
-let audioChunks = [];
-let currentAudioUrl = null;
-
-const startBtn = document.getElementById('startRecordingBtn');
-const stopBtn = document.getElementById('stopRecordingBtn');
-const echoAudio = document.getElementById('echoAudio');
-const echoError = document.getElementById('echoError');
-
-startBtn.addEventListener('click', async () => {
-  echoError.textContent = '';
-  echoAudio.hidden = true;
-  echoAudio.pause();
-  echoAudio.removeAttribute('src');
-  audioChunks = [];
-
-  if (currentAudioUrl) {
-    URL.revokeObjectURL(currentAudioUrl);
-    currentAudioUrl = null;
+document.addEventListener('DOMContentLoaded', async () => {
+  // Populate voices
+  try {
+    const res = await fetch('/voices');
+    const voices = (await res.json()) || [];
+    populateVoiceSelector(voices.length ? voices : fallbackVoices);
+  } catch (e) {
+    console.warn('Falling back to default voices.', e);
+    populateVoiceSelector(fallbackVoices);
   }
 
-  try {
-    mediaStream = await navigator.mediaDevices.getUserMedia({ audio: true });
-    mediaRecorder = new MediaRecorder(mediaStream);
+  // --- Echo Bot Logic ---
+  let mediaRecorder = null;
+  let recordedChunks = [];
 
-    mediaRecorder.ondataavailable = event => {
-      if (event.data.size > 0) {
-        audioChunks.push(event.data);
-      }
-    };
+  const startBtn = document.getElementById('startBtn');
+  const stopBtn = document.getElementById('stopBtn');
+  const echoAudio = document.getElementById('echoAudio');
 
-    mediaRecorder.onstop = () => {
-      const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
-      currentAudioUrl = URL.createObjectURL(audioBlob);
-      echoAudio.src = currentAudioUrl;
-      echoAudio.hidden = false;
-      echoAudio.load();
-      echoAudio.play();
+  startBtn.addEventListener('click', async () => {
+    if (!navigator.mediaDevices?.getUserMedia) {
+      alert('Audio recording not supported in this browser.');
+      return;
+    }
 
-      if (mediaStream) {
-        mediaStream.getTracks().forEach(track => track.stop());
-      }
-    };
-
-    mediaRecorder.start();
     startBtn.disabled = true;
     stopBtn.disabled = false;
+    recordedChunks = [];
 
-  } catch (err) {
-    echoError.textContent = 'Microphone access denied or unavailable.';
-    console.error('Microphone error:', err);
-  }
-});
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      mediaRecorder = new MediaRecorder(stream);
 
-stopBtn.addEventListener('click', () => {
-  if (mediaRecorder && mediaRecorder.state === 'recording') {
+      mediaRecorder.ondataavailable = event => {
+        if (event.data.size > 0) recordedChunks.push(event.data);
+      };
+
+      mediaRecorder.onstop = () => {
+        const blob = new Blob(recordedChunks, { type: 'audio/webm' });
+        const url = URL.createObjectURL(blob);
+        echoAudio.src = url;
+        echoAudio.hidden = false;
+        echoAudio.play();
+      };
+
+      mediaRecorder.start();
+    } catch (err) {
+      console.error('Error accessing mic:', err);
+      startBtn.disabled = false;
+      stopBtn.disabled = true;
+    }
+  });
+
+  stopBtn.addEventListener('click', () => {
+    stopBtn.disabled = true;
     mediaRecorder.stop();
     startBtn.disabled = false;
-    stopBtn.disabled = true;
-  }
+  });
 });
