@@ -1,3 +1,7 @@
+Of course\! Here is the updated README for Day 02, including the "Completed Days" section and formatted to match the layout you liked.
+
+-----
+
 # Day 02: Text-to-Speech with Murf AI
 
 Welcome to Day 2 of the 30 Days of Voice Agents Challenge\! Today, we're building on our FastAPI server by adding a Text-to-Speech (TTS) endpoint that integrates with the **Murf AI API**.
@@ -60,3 +64,8 @@ day-02/
 ├── requirements.txt  # Project dependencies
 └── .env              # To store your API key
 ```
+
+## ✅ Completed Days
+
+  - **Day 01**: Set up a basic FastAPI server with a Bootstrap UI.
+  - **Day 02**: Created a `/tts` endpoint to generate speech from text using Murf AI.
