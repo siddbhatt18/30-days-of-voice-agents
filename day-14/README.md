@@ -1,30 +1,22 @@
-# Day 14: Code Refactoring & ElevenLabs Integration
+# Day 14: Modular Code and Service-Oriented Architecture
 
-Welcome to Day 14 of the 30 Days of Voice Agents Challenge\! Today's focus was on improving the project's foundation by refactoring the code for better maintainability and adding **ElevenLabs** as a second Text-to-Speech (TTS) provider, giving users more voice options.
+Welcome to Day 14 of the 30 Days of Voice Agents Challenge\! Today, we've focused on refactoring our codebase into a more modular and service-oriented architecture. This improves organization, scalability, and maintainability as we continue to add more complex features to our voice agent.
 
 ## 🧠 What We Built
 
-  * **Major Code Refactoring**: The backend code has been significantly reorganized. The logic for interacting with external AI services (AssemblyAI, Gemini, Murf, ElevenLabs) has been extracted from `main.py` and moved into a dedicated `services` directory. This makes the code cleaner, more modular, and easier to manage.
-  * **ElevenLabs Integration**: We've added support for **ElevenLabs**, a popular and high-quality voice synthesis service. The agent can now generate responses using either Murf AI or ElevenLabs.
-  * **UI for Voice Selection**: The frontend has been updated with radio buttons, allowing the user to choose their preferred voice before starting the conversation.
-  * **Structured Configuration and Schemas**:
-      * A `config.py` file using **Pydantic Settings** has been introduced for a more robust and type-safe way of managing environment variables and API keys.
-      * A `schemas.py` file now defines Pydantic models for our data, ensuring better data validation and consistency.
-
------
+  - **Service-Oriented Structure**: We've broken down the core functionalities (STT, LLM, TTS) into their own dedicated service modules. This separation of concerns makes the code cleaner and easier to manage.
+  - **Configuration Module**: A new `config.py` module now handles the loading and configuration of all API keys and clients, centralizing our setup process.
+  - **Schema Definitions**: We've introduced a `schemas.py` file to define data structures using Pydantic, ensuring clear and validated data transfer within the application.
+  - **Organized Project Layout**: The project has been restructured with `services`, `static`, and `templates` directories, creating a more logical and scalable file organization.
 
 ## 🛠 Tech Stack
 
-Our tech stack has been updated with new libraries for voice synthesis and configuration management.
-
-  * **Backend**: `FastAPI`, `uvicorn`, `requests`, `assemblyai`, `google-generativeai`, **`elevenlabs`**, **`pydantic-settings`**
-  * **Frontend**: `HTML`, `Bootstrap`, `JavaScript`, `MediaRecorder` API
-  * **AI APIs**:
-      * **Murf AI** & **ElevenLabs** (Text-to-Speech)
-      * **AssemblyAI** (Speech-to-Text)
-      * **Google Gemini** (Large Language Model)
-
------
+  - **Backend**: `FastAPI`, `uvicorn`, `python-dotenv`, `requests`, `jinja2`, `assemblyai`, `google-generativeai`
+  - **Frontend**: `HTML`, `Bootstrap`, `JavaScript`, `MediaRecorder` API
+  - **AI APIs**:
+      - Murf AI (Text-to-Speech)
+      - AssemblyAI (Speech-to-Text)
+      - Google Gemini (Large Language Model)
 
 ## 🚀 Run the App
 
@@ -36,46 +28,52 @@ Our tech stack has been updated with new libraries for voice synthesis and confi
     ```bash
     pip install -r requirements.txt
     ```
-3.  **Create a `.env` file** in the `day-14/` directory. You now need to add your ElevenLabs API key.
+3.  **Create a `.env` file** in the `day-14/` directory and add your API keys:
     ```
     MURF_API_KEY="your_murf_api_key_here"
     ASSEMBLYAI_API_KEY="your_assemblyai_api_key_here"
     GEMINI_API_KEY="your_gemini_api_key_here"
-    ELEVENLABS_API_KEY="your_elevenlabs_api_key_here"
     ```
 4.  **Run the FastAPI server:**
     ```bash
     uvicorn main:app --reload
     ```
-5.  **Open your browser** and visit `http://localhost:8000`. You will now see options to select a voice before recording.
-
------
+5.  **Open your browser** and visit http://localhost:8000. Grant microphone permissions if prompted.
 
 ## 📂 Project Structure
 
-The project has been refactored into a more scalable and organized structure.
-
 ```
 day-14/
-├── main.py           # Slimmed down to handle routing and core logic
-├── config.py         # New file for Pydantic settings management
-├── schemas.py        # New file for Pydantic data models
-├── services/         # New directory for external API services
-│   ├── stt.py
-│   ├── llm.py
-│   └── tts.py
+├── main.py           # Main FastAPI application logic
+├── config.py         # API key loading and configuration
+├── schemas.py        # Pydantic data schemas
+├── services/
+│   ├── __init__.py
+│   ├── stt.py        # Speech-to-Text service module
+│   ├── llm.py        # Language Model service module
+│   └── tts.py        # Text-to-Speech service module
 ├── templates/
-│   └── index.html    # Updated with voice selection UI
+│   └── index.html
 ├── static/
-│   └── script.js     # Updated to send the selected voice
-├── requirements.txt  # Added elevenlabs and pydantic-settings
+│   ├── script.js
+│   └── fallback.mp3
+├── requirements.txt
 └── .env
 ```
 
------
-
 ## ✅ Completed Days
 
-  * **Day 01 - 12**: Journey from a basic server to a fully functional voice agent with chat history and a polished UI.
-  * **Day 13**: Created comprehensive project documentation.
-  * **Day 14**: Refactored the codebase and integrated **ElevenLabs** as a second TTS provider.
+  - **Day 01**: Set up a basic FastAPI server with a Bootstrap UI.
+  - **Day 02**: Created a `/tts` endpoint for Text-to-Speech using Murf AI.
+  - **Day 03**: Built a client-side interface for the TTS endpoint.
+  - **Day 04**: Added a client-side echo bot using the `MediaRecorder` API.
+  - **Day 05**: Implemented server-side audio upload.
+  - **Day 06**: Added Speech-to-Text transcription with AssemblyAI.
+  - **Day 07**: Created a voice-transforming echo bot.
+  - **Day 08**: Integrated the Gemini LLM for intelligent text generation.
+  - **Day 09**: Built a full voice-to-voice conversational agent.
+  - **Day 10**: Implemented chat history for context-aware conversations.
+  - **Day 11**: Added robust error handling and a fallback audio response.
+  - **Day 12**: Revamped the UI for a more streamlined and engaging user experience.
+  - **Day 13**: (Assumed) Initial planning and setup for code refactoring.
+  - **Day 14**: Refactored the codebase into a modular, service-oriented architecture.
