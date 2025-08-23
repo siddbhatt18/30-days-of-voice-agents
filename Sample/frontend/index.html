@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Voice Agent</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="h-screen w-screen bg-gray-950 text-gray-100 flex items-center justify-center">
+
+  <!-- Chat Container -->
+  <div class="w-full max-w-md h-[600px] flex flex-col bg-gray-900 border border-gray-800 rounded-2xl shadow-lg overflow-hidden">
+    
+    <!-- Header -->
+    <header class="p-4 border-b border-gray-800 text-center flex items-center justify-center space-x-2">
+      <span class="text-lg">🎙</span>
+      <h1 class="text-lg font-semibold text-gray-200 tracking-wide">Voice Agent</h1>
+    </header>
+
+    <!-- Chat Area -->
+    <main id="chat-log" class="flex-1 overflow-y-auto p-4 space-y-3 flex flex-col">
+      <!-- Incoming message (agent) -->
+      <div class="self-start max-w-[80%] px-4 py-2 bg-gray-800 rounded-xl text-sm text-gray-200">
+        Press the mic button to start talking.
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="p-4 border-t border-gray-800 flex items-center justify-center">
+      <button id="startAndstopBtn"
+        class="px-6 py-2 rounded-lg bg-gradient-to-r from-indigo-500 to-purple-600 text-white font-medium shadow-md hover:scale-105 transition-transform">
+        Start Recording
+      </button>
+    </footer>
+  </div>
+
+  <script src="./script.js"></script>
+</body>
+</html>
