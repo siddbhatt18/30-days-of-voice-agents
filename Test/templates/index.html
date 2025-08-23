@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>NEXUS - AI Voice Agent</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow-x: hidden;
+        }
+
+        .background-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .background-animation::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><radialGradient id="grad"><stop offset="0%" style="stop-color:rgba(255,255,255,0.1)"/><stop offset="100%" style="stop-color:rgba(255,255,255,0)"/></radialGradient></defs><circle cx="20" cy="20" r="2" fill="url(%23grad)"/><circle cx="80" cy="40" r="3" fill="url(%23grad)"/><circle cx="40" cy="80" r="1" fill="url(%23grad)"/><circle cx="90" cy="90" r="2" fill="url(%23grad)"/><circle cx="10" cy="60" r="1.5" fill="url(%23grad)"/></svg>') repeat;
+            animation: float 20s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(180deg); }
+        }
+
+        .main-container {
+            width: 90%;
+            max-width: 1200px;
+            display: grid;
+            grid-template-columns: 1fr 400px;
+            gap: 2rem;
+            margin: 2rem;
+        }
+
+        .chat-section {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .chat-header {
+            background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+            color: white;
+            padding: 1.5rem 2rem;
+            text-align: center;
+        }
+
+        .chat-header h1 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .chat-header .subtitle {
+            opacity: 0.9;
+            font-size: 0.95rem;
+            font-weight: 400;
+        }
+
+        .chat-log-container {
+            height: 500px;
+            overflow-y: auto;
+            padding: 1rem;
+            background: #f8fafc;
+        }
+
+        .chat-log {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .message {
+            max-width: 80%;
+            padding: 0.875rem 1.25rem;
+            border-radius: 18px;
+            font-size: 0.95rem;
+            line-height: 1.5;
+            animation: slideIn 0.3s ease-out;
+            word-wrap: break-word;
+        }
+
+        .message.user {
+            align-self: flex-end;
+            background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+            color: white;
+            margin-left: auto;
+        }
+
+        .message.assistant {
+            align-self: flex-start;
+            background: white;
+            color: #374151;
+            border: 1px solid #e5e7eb;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .control-section {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .record-button-container {
+            position: relative;
+            margin: 2rem 0;
+        }
+
+        .record-button {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            border: none;
+            background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+            color: white;
+            font-size: 2rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            z-index: 2;
+            box-shadow: 0 8px 25px rgba(79, 70, 229, 0.3);
+        }
+
+        .record-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 12px 35px rgba(79, 70, 229, 0.4);
+        }
+
+        .record-button.recording {
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+            animation: recordingPulse 2s infinite;
+        }
+
+        .record-button.recording::before {
+            content: '';
+            position: absolute;
+            top: -10px;
+            left: -10px;
+            right: -10px;
+            bottom: -10px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+            opacity: 0.3;
+            animation: ripple 2s infinite;
+            z-index: -1;
+        }
+
+        @keyframes recordingPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        @keyframes ripple {
+            0% {
+                transform: scale(0.8);
+                opacity: 0.3;
+            }
+            100% {
+                transform: scale(1.4);
+                opacity: 0;
+            }
+        }
+
+        .status-display {
+            font-size: 1.1rem;
+            color: #6b7280;
+            margin-bottom: 1rem;
+            font-weight: 500;
+            min-height: 1.5rem;
+        }
+
+        .status-display.listening {
+            color: #ef4444;
+            animation: textPulse 1.5s infinite;
+        }
+
+        @keyframes textPulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.6; }
+        }
+
+        .audio-visualizer {
+            display: none;
+            width: 200px;
+            height: 60px;
+            margin: 1rem auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 3px;
+        }
+
+        .visualizer-bar {
+            width: 4px;
+            background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+            border-radius: 2px;
+            animation: visualizer 0.8s ease-in-out infinite alternate;
+        }
+
+        .visualizer-bar:nth-child(1) { height: 20px; animation-delay: 0s; }
+        .visualizer-bar:nth-child(2) { height: 35px; animation-delay: 0.1s; }
+        .visualizer-bar:nth-child(3) { height: 15px; animation-delay: 0.2s; }
+        .visualizer-bar:nth-child(4) { height: 40px; animation-delay: 0.3s; }
+        .visualizer-bar:nth-child(5) { height: 25px; animation-delay: 0.4s; }
+        .visualizer-bar:nth-child(6) { height: 30px; animation-delay: 0.5s; }
+        .visualizer-bar:nth-child(7) { height: 20px; animation-delay: 0.6s; }
+
+        @keyframes visualizer {
+            from { height: 5px; }
+            to { height: 40px; }
+        }
+
+        .current-transcript {
+            background: #f3f4f6;
+            border-radius: 12px;
+            padding: 1rem;
+            margin-top: 1rem;
+            min-height: 60px;
+            font-style: italic;
+            color: #6b7280;
+            border: 2px dashed #d1d5db;
+            transition: all 0.3s ease;
+        }
+
+        .current-transcript.active {
+            border-color: #4f46e5;
+            background: #eef2ff;
+            color: #4f46e5;
+            border-style: solid;
+        }
+
+        .connection-indicator {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #10b981;
+            animation: connectionPulse 2s infinite;
+        }
+
+        .connection-indicator.disconnected {
+            background: #ef4444;
+            animation: none;
+        }
+
+        @keyframes connectionPulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .feature-list {
+            margin-top: 1.5rem;
+            text-align: left;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 0.75rem;
+            color: #6b7280;
+            font-size: 0.9rem;
+        }
+
+        .feature-icon {
+            width: 20px;
+            height: 20px;
+            background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+        }
+
+        @media (max-width: 768px) {
+            .main-container {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+                margin: 1rem;
+            }
+
+            .chat-log-container {
+                height: 400px;
+            }
+
+            .record-button {
+                width: 100px;
+                height: 100px;
+                font-size: 1.5rem;
+            }
+        }
+
+        .typing-indicator {
+            display: none;
+            padding: 0.875rem 1.25rem;
+            background: white;
+            border-radius: 18px;
+            border: 1px solid #e5e7eb;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            max-width: 80px;
+        }
+
+        .typing-dots {
+            display: flex;
+            gap: 4px;
+        }
+
+        .typing-dot {
+            width: 8px;
+            height: 8px;
+            background: #9ca3af;
+            border-radius: 50%;
+            animation: typingBounce 1.4s ease-in-out infinite both;
+        }
+
+        .typing-dot:nth-child(1) { animation-delay: -0.32s; }
+        .typing-dot:nth-child(2) { animation-delay: -0.16s; }
+
+        @keyframes typingBounce {
+            0%, 80%, 100% {
+                transform: scale(0);
+            }
+            40% {
+                transform: scale(1);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="background-animation"></div>
+    <div class="connection-indicator" id="connectionIndicator"></div>
+    
+    <div class="main-container">
+        <div class="chat-section">
+            <div class="chat-header">
+                <h1>
+                    <i class="fas fa-robot"></i>
+                    NEXUS
+                </h1>
+                <div class="subtitle">Your AI Voice Assistant</div>
+            </div>
+            
+            <div class="chat-log-container">
+                <div class="chat-log" id="chatLog">
+                    <div class="message assistant">
+                        <i class="fas fa-sparkles" style="margin-right: 0.5rem; color: #4f46e5;"></i>
+                        Hello! I'm NEXUS, your personal AI voice assistant. Press the microphone button and start speaking to begin our conversation.
+                    </div>
+                </div>
+                
+                <div class="typing-indicator" id="typingIndicator">
+                    <div class="typing-dots">
+                        <div class="typing-dot"></div>
+                        <div class="typing-dot"></div>
+                        <div class="typing-dot"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="control-section">
+            <div class="status-display" id="statusDisplay">Ready to chat!</div>
+            
+            <div class="record-button-container">
+                <button class="record-button" id="recordButton">
+                    <i class="fas fa-microphone" id="micIcon"></i>
+                </button>
+            </div>
+
+            <div class="audio-visualizer" id="audioVisualizer">
+                <div class="visualizer-bar"></div>
+                <div class="visualizer-bar"></div>
+                <div class="visualizer-bar"></div>
+                <div class="visualizer-bar"></div>
+                <div class="visualizer-bar"></div>
+                <div class="visualizer-bar"></div>
+                <div class="visualizer-bar"></div>
+            </div>
+
+            <div class="current-transcript" id="currentTranscript">
+                Waiting for speech...
+            </div>
+
+            <div class="feature-list">
+                <div class="feature-item">
+                    <div class="feature-icon"><i class="fas fa-microphone"></i></div>
+                    Real-time voice transcription
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon"><i class="fas fa-brain"></i></div>
+                    AI-powered responses
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon"><i class="fas fa-volume-up"></i></div>
+                    Text-to-speech output
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon"><i class="fas fa-comments"></i></div>
+                    Natural conversation flow
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", async () => {
+            // --- SESSION MANAGEMENT ---
+            const urlParams = new URLSearchParams(window.location.search);
+            let sessionId = urlParams.get('session_id');
+            if (!sessionId) {
+                sessionId = crypto.randomUUID();
+                window.history.replaceState({}, '', `?session_id=${sessionId}`);
+            }
+
+            // --- DOM Elements ---
+            const recordButton = document.getElementById("recordButton");
+            const statusDisplay = document.getElementById("statusDisplay");
+            const currentTranscript = document.getElementById("currentTranscript");
+            const chatLog = document.getElementById("chatLog");
+            const micIcon = document.getElementById("micIcon");
+            const audioVisualizer = document.getElementById("audioVisualizer");
+            const connectionIndicator = document.getElementById("connectionIndicator");
+            const typingIndicator = document.getElementById("typingIndicator");
+
+            // --- WebSocket and Recording Logic ---
+            let audioContext;
+            let source = null;
+            let processor = null;
+            let isRecording = false;
+            let ws = null;
+            let stream;
+            let audioQueue = [];
+            let isPlaying = false;
+
+            function updateConnectionStatus(connected) {
+                if (connected) {
+                    connectionIndicator.classList.remove("disconnected");
+                } else {
+                    connectionIndicator.classList.add("disconnected");
+                }
+            }
+
+            function addMessage(text, type) {
+                const messageDiv = document.createElement('div');
+                messageDiv.className = `message ${type}`;
+                
+                if (type === "assistant") {
+                    const icon = document.createElement('i');
+                    icon.className = "fas fa-robot";
+                    icon.style.marginRight = "0.5rem";
+                    icon.style.color = "#4f46e5";
+                    messageDiv.appendChild(icon);
+                }
+                
+                const textNode = document.createTextNode(text);
+                messageDiv.appendChild(textNode);
+                
+                chatLog.appendChild(messageDiv);
+                chatLog.parentElement.scrollTop = chatLog.parentElement.scrollHeight;
+            }
+
+            function showTyping() {
+                typingIndicator.style.display = "block";
+                chatLog.appendChild(typingIndicator);
+                chatLog.parentElement.scrollTop = chatLog.parentElement.scrollHeight;
+            }
+
+            function hideTyping() {
+                typingIndicator.style.display = "none";
+            }
+
+            function updateTranscript(text, isFinal = false) {
+                currentTranscript.textContent = text || "Waiting for speech...";
+                if (isFinal) {
+                    currentTranscript.classList.add("active");
+                    setTimeout(() => {
+                        currentTranscript.classList.remove("active");
+                        currentTranscript.textContent = "Waiting for speech...";
+                    }, 2000);
+                }
+            }
+
+            /* Convert Float32 → PCM16 */
+            function floatTo16BitPCM(float32Array) {
+                const buffer = new ArrayBuffer(float32Array.length * 2);
+                const view = new DataView(buffer);
+                let offset = 0;
+                for (let i = 0; i < float32Array.length; i++, offset += 2) {
+                    let s = Math.max(-1, Math.min(1, float32Array[i]));
+                    view.setInt16(offset, s < 0 ? s * 0x8000 : s * 0x7fff, true);
+                }
+                return buffer;
+            }
+
+            function playAudioChunk(b64) {
+                const audioData = Uint8Array.from(atob(b64), c => c.charCodeAt(0)).buffer;
+                audioContext.decodeAudioData(audioData)
+                    .then(buffer => {
+                        audioQueue.push(buffer);
+                        if (!isPlaying) playNextChunk();
+                    })
+                    .catch(err => console.error("Decode error:", err));
+            }
+
+            function playNextChunk() {
+                if (audioQueue.length === 0) {
+                    isPlaying = false;
+                    return;
+                }
+                isPlaying = true;
+                const buffer = audioQueue.shift();
+                const sourceNode = audioContext.createBufferSource();
+                sourceNode.buffer = buffer;
+                sourceNode.connect(audioContext.destination);
+                sourceNode.onended = () => playNextChunk();
+                sourceNode.start();
+            }
+
+            const startRecording = async () => {
+                ws = new WebSocket("ws://127.0.0.1:8000/ws/audio");
+
+                ws.onopen = () => {
+                    console.log("WebSocket connected");
+                    updateConnectionStatus(true);
+                };
+                
+                ws.onclose = () => {
+                    console.log("WebSocket closed");
+                    updateConnectionStatus(false);
+                };
+                
+                ws.onerror = (err) => {
+                    console.error("WebSocket error", err);
+                    updateConnectionStatus(false);
+                };
+
+                let assistantMessageBuffer = "";
+
+                ws.onmessage = (event) => {
+                    try {
+                        const msg = JSON.parse(event.data);
+
+                        if (msg.type === "llm") {
+                            if (!assistantMessageBuffer) {
+                                hideTyping();
+                            }
+                            assistantMessageBuffer += msg.text;
+                            
+                            // Update the last assistant message or create a new one
+                            const lastMessage = chatLog.lastElementChild;
+                            if (lastMessage && lastMessage.classList.contains('assistant') && lastMessage !== typingIndicator) {
+                                lastMessage.innerHTML = `<i class="fas fa-robot" style="margin-right: 0.5rem; color: #4f46e5;"></i>${assistantMessageBuffer}`;
+                            } else {
+                                addMessage(assistantMessageBuffer, "assistant");
+                            }
+                        } else if (msg.type === "final") {
+                            addMessage(msg.text, "user");
+                            updateTranscript(msg.text, true);
+                            showTyping();
+                            assistantMessageBuffer = "";
+                        } else if (msg.type === "audio") {
+                            playAudioChunk(msg.b64);
+                        } else if (msg.type === "error") {
+                            console.error("Server error:", msg.message);
+                            hideTyping();
+                        }
+                    } catch {
+                        console.log("Raw message:", event.data);
+                    }
+                };
+
+                stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                audioContext = new AudioContext({ sampleRate: 16000 });
+                source = audioContext.createMediaStreamSource(stream);
+                processor = audioContext.createScriptProcessor(4096, 1, 1);
+
+                source.connect(processor);
+                processor.connect(audioContext.destination);
+
+                processor.onaudioprocess = (e) => {
+                    const inputData = e.inputBuffer.getChannelData(0);
+                    const pcm16 = floatTo16BitPCM(inputData);
+                    if (ws && ws.readyState === WebSocket.OPEN) {
+                        ws.send(pcm16);
+                    }
+                };
+            }
+
+            const stopRecording = () => {
+                if (!isRecording) return;
+
+                isRecording = false;
+                recordButton.classList.remove("recording");
+                micIcon.className = "fas fa-microphone";
+                statusDisplay.textContent = "Processing...";
+                statusDisplay.classList.remove("listening");
+                audioVisualizer.style.display = "none";
+
+                // Clean up audio processing
+                if (processor) {
+                    processor.disconnect();
+                    processor.onaudioprocess = null;
+                }
+
+                if (source) {
+                    source.disconnect();
+                }
+
+                if (audioContext && audioContext.state !== 'closed') {
+                    audioContext.close();
+                }
+
+                // Stop media stream tracks
+                if (stream) {
+                    stream.getTracks().forEach(track => track.stop());
+                }
+
+                // Send EOF and close WebSocket
+                if (ws && ws.readyState === WebSocket.OPEN) {
+                    ws.close();
+                }
+                ws = null;
+
+                setTimeout(() => {
+                    statusDisplay.textContent = "Ready to chat!";
+                }, 2000);
+            };
+
+            recordButton.addEventListener("click", async () => {
+                if (isRecording) {
+                    stopRecording();
+                } else {
+                    try {
+                        isRecording = true;
+                        recordButton.classList.add("recording");
+                        micIcon.className = "fas fa-stop";
+                        statusDisplay.textContent = "Listening... Speak now";
+                        statusDisplay.classList.add("listening");
+                        audioVisualizer.style.display = "flex";
+                        await startRecording();
+                    } catch (error) {
+                        console.error("Failed to start recording:", error);
+                        stopRecording();
+                        statusDisplay.textContent = "Microphone access denied";
+                    }
+                }
+            });
+
+            // Clean up on page unload
+            window.addEventListener('beforeunload', () => {
+                if (isRecording) {
+                    stopRecording();
+                }
+            });
+
+            // Initialize connection status
+            updateConnectionStatus(false);
+        });
+    </script>
+</body>
+</html>
