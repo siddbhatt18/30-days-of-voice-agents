@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!DOCTYPE templates/index.html>
 <html lang="en">
 <head>
     <meta charset="UTF-8" />
@@ -104,14 +104,12 @@
             color: #343a40;
             line-height: 1.4;
         }
-
     </style>
 </head>
 <body class="bg-light">
     <div class="container d-flex justify-content-center align-items-center min-vh-100">
         <div class="chat-container text-center">
-            <h4 class="mb-3">AI Voice Agent with Turn Detection</h4>
-            
+            <h4 class="mb-3">AI Voice Agent with Turn Detection</h4>  
             <p class="mb-4 text-muted">Press the button to start the conversation.</p>
             <div class="d-flex justify-content-center mb-4">
                 <button id="recordBtn" class="record-btn">
@@ -121,15 +119,13 @@
                     </svg>
                 </button>
             </div>
-            <div id="statusDisplay" class="status-display">Ready to chat!</div>
-            
+            <div id="statusDisplay" class="status-display">Ready to chat!</div>         
             <!-- Transcription Display Area -->
             <div id="transcriptionDisplay" class="transcription-container d-none">
                 <div class="transcription-label text-start">Current Turn:</div>
                 <div id="currentTranscript" class="transcription-text text-start">
                     Waiting for speech...
-                </div>
-                
+                </div>             
                 <!-- Transcription History -->
                 <div class="transcription-label text-start mt-3">Transcription History:</div>
                 <div id="transcriptionHistory" class="transcription-history">
@@ -137,8 +133,7 @@
                         Your completed turns will appear here...
                     </div>
                 </div>
-            </div>
-            
+            </div>          
             <audio id="audioPlayer" hidden></audio>
         </div>
     </div>
