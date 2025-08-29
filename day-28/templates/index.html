@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MARVIS</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="container d-flex justify-content-center align-items-center min-vh-100">
+        <div class="chat-container">
+            <div class="chat-header text-center mb-4">
+                <h4>MARVIS</h4>
+                <p class="text-muted">Machine-based Assistant for Research, Voice, and Interactive Services</p>
+                <button id="settingsBtn" class="settings-btn"><i class="fas fa-cog"></i></button>
+            </div>
+            <div id="chat-log" class="chat-log"></div>
+            <div class="chat-input-container text-center mt-4">
+                <button id="recordBtn" class="record-btn">
+                    <i class="fas fa-microphone"></i>
+                </button>
+                <div id="statusDisplay" class="status-display mt-3">Ready to chat!</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="settingsModal" tabindex="-1" aria-labelledby="settingsModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="settingsModalLabel">Settings</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="murfApiKey" class="form-label">MURF API Key</label>
+                        <input type="password" class="form-control" id="murfApiKey" placeholder="Enter your Murf API key">
+                    </div>
+                    <div class="mb-3">
+                        <label for="assemblyAiApiKey" class="form-label">AssemblyAI API Key</label>
+                        <input type="password" class="form-control" id="assemblyAiApiKey" placeholder="Enter your AssemblyAI API key">
+                    </div>
+                    <div class="mb-3">
+                        <label for="geminiApiKey" class="form-label">Gemini API Key</label>
+                        <input type="password" class="form-control" id="geminiApiKey" placeholder="Enter your Gemini API key">
+                    </div>
+                    <div class="mb-3">
+                        <label for="serpApiKey" class="form-label">SerpAPI API Key</label>
+                        <input type="password" class="form-control" id="serpApiKey" placeholder="Enter your SerpAPI API key">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="saveKeysBtn">Save Changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/static/script.js"></script>
+</body>
+</html>
