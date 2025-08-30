@@ -90,9 +90,9 @@ To get a local copy up and running, follow these simple steps.
     ```sh
     git clone https://github.com/siddbhatt18/30-days-of-voice-agents.git
     ```
-2.  **Navigate to the latest project directory** (e.g., `day-28`).
+2.  **Navigate to the latest project directory** (e.g., `day-29`).
     ```sh
-    cd 30-days-of-voice-agents/day-28/
+    cd 30-days-of-voice-agents/day-29/
     ```
 3.  **Install the required dependencies** from the `requirements.txt` file.
     ```sh
@@ -136,7 +136,7 @@ AI Voice Agent/
 
 -----
 
-## 🗓️ Project Journey: Day 1 to 28
+## 🗓️ Project Journey: Day 1 to 29
 
 Here is a summary of the progress made during the challenge.
 
@@ -156,3 +156,4 @@ Here is a summary of the progress made during the challenge.
   * **Day 14 - 26**: Continued with foundational work, from setting up the server and integrating AI services to giving the agent a persona and web search capabilities.
   * **Day 27**: Revamped the UI and implemented a settings panel for API key configuration directly in the browser.
   * **Day 28**: Successfully deployed the agent to a public cloud server, making it accessible to all.
+  * **Day 29**: Updated the main `README.md` to include all the latest features, architectural changes, and a complete project journey, ensuring the documentation is comprehensive and up-to-date with the current state of the voice agent.
