@@ -1,6 +1,6 @@
 # 30 Days of Voice Agents Challenge
 
-Welcome to the repository for my 30 Days of Voice Agents Challenge\! This project documents the journey of building a sophisticated, voice-activated conversational AI from the ground up. Over the course of this challenge, a simple web page evolves into a fully interactive voice agent capable of holding context-aware conversations.
+Welcome to the repository for my 30 Days of Voice Agents Challenge\! This project documents the journey of building a sophisticated, voice-activated conversational AI from the ground up. Over the course of this challenge, a simple web page evolves into a fully interactive voice agent capable of holding context-aware conversations, now deployed and accessible online.
 
 -----
 
@@ -8,7 +8,7 @@ Welcome to the repository for my 30 Days of Voice Agents Challenge\! This projec
 
 This project is a hands-on guide to building a voice-based conversational AI using modern web technologies and powerful AI APIs. You can engage in a continuous, voice-to-voice conversation with an AI powered by Google's Gemini LLM. The agent remembers the context of your conversation, allowing for natural follow-up questions and a more human-like interaction.
 
-The repository is structured by day, with each folder representing a significant step in the development process, from setting up the server to implementing a full conversational loop with memory.
+The repository is structured by day, with each folder representing a significant step in the development process, from setting up the server to implementing a full conversational loop with memory and deploying it to the cloud.
 
 ### Key Features
 
@@ -17,6 +17,7 @@ The repository is structured by day, with each folder representing a significant
   * **End-to-End AI Pipeline**: It seamlessly integrates multiple AI services for a complete Speech-to-Text → Large Language Model → Text-to-Speech pipeline.
   * **Modern & Intuitive UI**: A clean, user-friendly interface with a single-button control and visual feedback for different states (e.g., ready, recording, thinking).
   * **Robust Error Handling**: Includes a fallback audio response for graceful failure when an API call is unsuccessful, ensuring a smooth user experience.
+  * **Live Deployment**: The voice agent is deployed to the cloud and is publicly accessible.
 
 -----
 
@@ -28,14 +29,18 @@ The application is built using a combination of Python for the backend, vanilla 
       * **FastAPI**: For building the high-performance, asynchronous API server.
       * **Uvicorn**: As the ASGI server to run the FastAPI application.
       * **Python-Dotenv**: To manage environment variables securely.
+      * **WebSockets**: For real-time, bidirectional communication between the client and server.
   * **Frontend**:
       * **HTML, CSS, JavaScript**: For the structure, styling, and client-side logic.
       * **Bootstrap**: For creating a responsive and modern user interface.
-      * **MediaRecorder API**: To capture audio directly from the user's microphone in the browser.
+      * **MediaRecorder API & WebSocket API**: To capture and stream audio directly from the user's microphone in the browser.
   * **AI & Voice APIs**:
-      * **Murf AI**: For generating high-quality, natural-sounding Text-to-Speech (TTS).
-      * **AssemblyAI**: For providing fast and accurate Speech-to-Text (STT) transcription.
-      * **Google Gemini**: As the Large Language Model (LLM) for generating intelligent and coherent responses.
+      * **Murf AI**: For generating high-quality, natural-sounding Text-to-Speech (TTS), including streaming capabilities.
+      * **AssemblyAI**: For providing fast and accurate real-time Speech-to-Text (STT) transcription with turn detection.
+      * **Google Gemini**: As the Large Language Model (LLM) for generating intelligent and coherent responses, with streaming and function calling.
+      * **SerpAPI**: For real-time Google Search results, giving the agent access to current information.
+  * **Deployment**:
+      * **Render.com**: For hosting the application and making it publicly available.
 
 -----
 
@@ -58,25 +63,36 @@ Here is the flow for a single turn in a conversation:
 
 ## 🚀 Getting Started
 
+### Try the Live Agent
+
+Our voice agent is now live\! You can access and interact with it here:
+
+**[https://marvis-voice-agent-l7da.onrender.com/](https://marvis-voice-agent-l7da.onrender.com/)**
+
+Simply visit the link, click the settings icon to enter your API keys, grant microphone permissions, and start chatting\!
+
+### Running the App Locally
+
 To get a local copy up and running, follow these simple steps.
 
-### Prerequisites
+#### Prerequisites
 
   * Python 3.8+
   * API keys for:
       * Murf AI
       * AssemblyAI
       * Google Gemini
+      * SerpAPI
 
-### Installation & Running the App
+#### Installation
 
 1.  **Clone the repository**
     ```sh
     git clone https://github.com/siddbhatt18/30-days-of-voice-agents.git
     ```
-2.  **Navigate to a specific day's project directory** (e.g., `day-13` for the latest version).
+2.  **Navigate to the latest project directory** (e.g., `day-28`).
     ```sh
-    cd 30-days-of-voice-agents/day-13/
+    cd 30-days-of-voice-agents/day-28/
     ```
 3.  **Install the required dependencies** from the `requirements.txt` file.
     ```sh
@@ -87,6 +103,7 @@ To get a local copy up and running, follow these simple steps.
     MURF_API_KEY="your_murf_api_key_here"
     ASSEMBLYAI_API_KEY="your_assemblyai_api_key_here"
     GEMINI_API_KEY="your_gemini_api_key_here"
+    SERP_API_KEY="your_serp_api_key_here"
     ```
 5.  **Run the FastAPI server** with hot-reloading.
     ```sh
@@ -96,9 +113,32 @@ To get a local copy up and running, follow these simple steps.
 
 -----
 
-## 🗓️ Project Journey: Day 1 to 13
+## 📂 Project Structure
 
-Here is a summary of the progress made during the first 13 days of the challenge.
+The project structure is optimized for deployment.
+
+```
+AI Voice Agent/
+├── main.py      # Handles WebSocket connections and API key logic
+├── services/
+│   ├── llm.py   # Handles interactions with the Gemini LLM
+│   ├── stt.py   # Manages real-time speech-to-text
+│   └── tts.py   # Manages text-to-speech conversion
+├── schemas.py
+├── templates/
+│   └── index.html # Main UI for the voice agent
+├── static/
+│   ├── script.js  # Frontend logic for recording and settings
+│   └── style.css  # UI styles
+├── requirements.txt # Lists all project dependencies for deployment
+└── .env           # Stores API keys for local development
+```
+
+-----
+
+## 🗓️ Project Journey: Day 1 to 28
+
+Here is a summary of the progress made during the challenge.
 
   * **Day 01**: Laid the foundation with a basic **FastAPI server** and a simple **Bootstrap UI**.
   * **Day 02**: Integrated the **Murf AI API** to create the first endpoint for Text-to-Speech (TTS).
@@ -112,4 +152,7 @@ Here is a summary of the progress made during the first 13 days of the challenge
   * **Day 10**: Implemented **chat history** and session management, giving the agent a "memory" to hold context-aware conversations.
   * **Day 11**: Made the application more robust by adding **server-side and client-side error handling**, including a friendly fallback audio message for API failures.
   * **Day 12**: Performed a major **UI revamp**, simplifying the interface to a single, animated record button and a cleaner, more modern aesthetic.
-  * **Day 13**: Focused on **documentation**, creating this comprehensive `README.md` file to explain the project's architecture, features, and setup.
+  * **Day 13**: Focused on **documentation**, creating a comprehensive `README.md` file to explain the project's architecture, features, and setup.
+  * **Day 14 - 26**: Continued with foundational work, from setting up the server and integrating AI services to giving the agent a persona and web search capabilities.
+  * **Day 27**: Revamped the UI and implemented a settings panel for API key configuration directly in the browser.
+  * **Day 28**: Successfully deployed the agent to a public cloud server, making it accessible to all.
