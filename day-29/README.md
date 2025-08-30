@@ -27,7 +27,7 @@ The tech stack remains the same as our deployed version.
 
 ## 🚀 Run the App
 
-Our voice agent remains live and unchanged from yesterday. You can access and interact with it here:
+Our voice agent is now live\! You can access and interact with it here:
 
 **[https://marvis-voice-agent-l7da.onrender.com/](https://marvis-voice-agent-l7da.onrender.com/)**
 
@@ -37,14 +37,13 @@ Simply visit the link, click the settings icon to enter your API keys, grant mic
 
 ## 📂 Project Structure
 
-The project structure is unchanged.
+The project structure is optimized for deployment.
 
 ```
 AI Voice Agent/
 ├── main.py      # Handles WebSocket connections and API key logic
 ├── services/
 │   ├── llm.py   # Handles interactions with the Gemini LLM
-│   ├── stt.py   # Manages real-time speech-to-text
 │   └── tts.py   # Manages text-to-speech conversion
 ├── schemas.py
 ├── templates/
