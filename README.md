@@ -153,7 +153,19 @@ Here is a summary of the progress made during the challenge.
   * **Day 11**: Made the application more robust by adding **server-side and client-side error handling**, including a friendly fallback audio message for API failures.
   * **Day 12**: Performed a major **UI revamp**, simplifying the interface to a single, animated record button and a cleaner, more modern aesthetic.
   * **Day 13**: Focused on **documentation**, creating a comprehensive `README.md` file to explain the project's architecture, features, and setup.
-  * **Day 14 - 26**: Continued with foundational work, from setting up the server and integrating AI services to giving the agent a persona and web search capabilities.
-  * **Day 27**: Revamped the UI and implemented a settings panel for API key configuration directly in the browser.
-  * **Day 28**: Successfully deployed the agent to a public cloud server, making it accessible to all.
+  * **Day 14**: **Refactored the project structure** by organizing the code into `services`, `schemas`, and `config` files for better modularity.
+  * **Day 15**: **Gave the agent a persona** to make the interaction more engaging and consistent.
+  * **Day 16**: Implemented **streaming for AssemblyAI's STT service** for real-time transcription.
+  * **Day 17**: Integrated **streaming for the Google Gemini LLM** to get faster responses.
+  * **Day 18**: Added **streaming for Murf AI's TTS service** to start hearing the agent's voice sooner.
+  * **Day 19**: Switched to **WebSockets** for persistent, real-time, and bidirectional communication.
+  * **Day 20**: Implemented **turn detection** in the STT service to know when the user has finished speaking.
+  * **Day 21**: Integrated **SerpAPI** for real-time Google Search results.
+  * **Day 22**: Implemented **function calling** with Google Gemini to let the agent decide when to use the search tool.
+  * **Day 23**: Refined the UI to show **real-time transcription and the agent's thoughts**.
+  * **Day 24**: Added a **loading animation and other visual cues** to the UI.
+  * **Day 25**: Added a **welcome message** that plays on page load.
+  * **Day 26**: Gave the voice agent a name: **"Marvis"**.
+  * **Day 27**: Revamped the UI and implemented a **settings panel** for API key configuration directly in the browser.
+  * **Day 28**: Successfully **deployed the agent** to a public cloud server, making it accessible to all.
   * **Day 29**: Updated the main `README.md` to include all the latest features, architectural changes, and a complete project journey, ensuring the documentation is comprehensive and up-to-date with the current state of the voice agent.
